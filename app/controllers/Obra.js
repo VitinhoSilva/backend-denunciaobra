@@ -13,7 +13,7 @@ module.exports = obraUtil;
 
 async function criarDatabaseObra(req, res) {
     try {
-         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia DATE NOT NULL, autor_denuncia VARCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, obsevacao TEXT NOT NULL);';
+         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia DATE NOT NULL, autor_denuncia constCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, observacao TEXT NOT NULL);';
          const pg = await cliente.connection();
          await pg.query(tabela).then((response) => {
             console.log('Tabela criada com sucesso, ou já existia!');
@@ -29,26 +29,30 @@ async function inserirObra(req, res) {
     try {
         const {data, autor, x, y, observacao} = req.body;
         if (data && autor && x && y && observacao) {
-            const inserting = `INSERT INTO denuncia (data_denuncia, autor_denuncia, x, y, obsevacao) VALUES ('${data}', '${autor}' , ${x}, ${y}, '${observacao}');`;
+            const inserting = `INSERT INTO denuncia (data_denuncia, autor_denuncia, x, y, observacao) VALUES ('${data}', '${autor}' , ${x}, ${y}, '${observacao}');`;
             const pg = await cliente.connection();
             await pg.query(inserting).then((response) => {
-               res.json({result: 'Campo inserido com sucesso!'});
+                const result = {result: 'Campo inserido com sucesso!'};
+                res.json(result);
             }).catch((err) => {
                 console.log('erro: ', err);
-                res.json({
+                const result = {
                     msg: 'Contate o administrador do sistema!',
                     erro: err
-                });
+                };
+                res.json(result);
              });
         } else {
-            res.json({erro: 'Campos incorretos!'});
+            const result = {erro: 'Campos incorretos!'};
+            res.json(result);
         }
     } catch (err) {
         console.log('erro: ', err);
-        res.json({
+        const result = {
             msg: 'Contate o administrador do sistema!',
             erro: err
-        });
+        };
+        res.json(result);
     }
 }
 
@@ -57,20 +61,24 @@ async function listarObra(req, res) {
         const selecting = `SELECT * FROM denuncia;`;
         const pg = await cliente.connection();
         await pg.query(selecting).then((response) => {
-            res.json({result: response.rows});
+            const result = {obras: response.rows};
+            res.json(result);
         }).catch((err) => {
             console.log('erro: ', err);
-            res.json({
+            const result = {
                 msg: 'Contate o administrador do sistema!',
                 erro: err
-            });
+            };
+            res.json(result);
+
         });
     } catch (err) {
         console.log('erro: ', err);
-        res.json({
+        const result = {
             msg: 'Contate o administrador do sistema!',
             erro: err
-        });
+        };
+        res.json(result);
     }
 }
 
@@ -81,25 +89,29 @@ async function filtrarObra(req, res) {
         const pg = await cliente.connection();
         await pg.query(selecting).then((response) => {
             if (response.rowCount) {
-                res.json({result: response.rows});
+                const result = {obras: response.rows};
+                res.json(result);
             } else {
-                res.json({
-                    msg: 'Id não cadastrado!'
-                });
+                const result = {
+                    msg: 'Id não cadastrado!',
+                };
+                res.json(result);
             }
         }).catch((err) => {
             console.log('erro: ', err);
-            res.json({
+            const result = {
                 msg: 'Contate o administrador do sistema!',
                 erro: err
-            });
+            };
+            res.json(result);
         });
     } catch (err) {
         console.log('erro: ', err);
-        res.json({
+        const result = {
             msg: 'Contate o administrador do sistema!',
             erro: err
-        });
+        };
+        res.json(result);
     }
 }
 
@@ -110,25 +122,29 @@ async function deletarObra(req, res) {
         const pg = await cliente.connection();
         await pg.query(deleting).then((response) => {
             if (response.rowCount) {
-                res.json({result: 'Campo deletado com sucesso!'});
+                const result = {result: 'Campo deletado com sucesso!'};
+                res.json(result);
             } else {
-                res.json({
-                    msg: 'Id não cadastrado!'
-                });
+                const result = {
+                    msg: 'Id não cadastrado!',
+                };
+                res.json(result);
             }
         }).catch((err) => {
             console.log('erro: ', err);
-            res.json({
+            const result = {
                 msg: 'Contate o administrador do sistema!',
                 erro: err
-            });
+            };
+            res.json(result);
         });
     } catch (err) {
         console.log('erro: ', err);
-        res.json({
+        const result = {
             msg: 'Contate o administrador do sistema!',
             erro: err
-        });
+        };
+        res.json(result);
     }
 }
 
@@ -137,31 +153,35 @@ async function atualizarObra(req, res) {
         const id = req.params.id;
         const {data, autor, x, y, observacao} = req.body;
         if (data && autor && x && y && observacao) {
-            const updating = `UPDATE denuncia SET data_denuncia = '${data}', autor_denuncia = '${autor}', x = ${x}, y = ${y}, obsevacao = '${observacao}' WHERE id = ${id}`
+            const updating = `UPDATE denuncia SET data_denuncia = '${data}', autor_denuncia = '${autor}', x = ${x}, y = ${y}, observacao = '${observacao}' WHERE id = ${id}`
             const pg = await cliente.connection();
             await pg.query(updating).then((response) => {
                 if (response.rowCount) {
-                    res.json({result: 'Campo atualizado com sucesso!'});
+                    const result = {result: 'Campo atualizado com sucesso!'};
+                    res.json(result);
                 } else {
-                    res.json({
-                        msg: 'Id não cadastrado!'
-                    });
+                    const result = {
+                        msg: 'Id não cadastrado!',
+                    };
+                    res.json(result);
                 }              
             }).catch((err) => {
                 console.log('erro: ', err);
-                res.json({
+                const result = {
                     msg: 'Contate o administrador do sistema!',
                     erro: err
-                });
+                };
+                res.json(result);
              });
         } else {
             res.json({erro: 'Campos incorretos!'});
         }
     } catch (err) {
         console.log('erro: ', err);
-        res.json({
+        const result = {
             msg: 'Contate o administrador do sistema!',
             erro: err
-        });
+        };
+        res.json(result);
     }
 }
