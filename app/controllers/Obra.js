@@ -1,19 +1,21 @@
-const { sqlConfig } = require('../../knexfile.js');
-var sql = require('mssql');
+const { Client } = require('pg')
+const { pool } = require('../../database.js');
+const client = new Client(pool);
 
 var obraUtil = {
+    criarDatabaseObra: criarDatabaseObra,
     inserirObra: inserirObra,
     listarObra: listarObra,
     filtrarObra: filtrarObra,
     deletarObra: deletarObra,
-    atualizarObra: atualizarObra,
-    atualizarObraObjId: atualizarObraObjId,
-    deletarObraObjId: deletarObraObjId
+    atualizarObra: atualizarObra
 }
 
 module.exports = obraUtil;
 
-function criarDatabaseObra(req, res) {j
+async function criarDatabaseObra(req, res) {
+    try {
+        await client.connect();
         var query = `CREATE TABLE IF NOT EXISTS denuncia (
             id  SERIAL NOT NULL PRIMARY KEY,
             data_denuncia DATE NOT NULL,
@@ -22,33 +24,30 @@ function criarDatabaseObra(req, res) {j
             y NUMERIC NOT NULL,
             obsevacao TEXT NOT NULL
          );`
+
+
+    } catch (error) {
+        console.log(error);
+        res.json({err: error});
+      }
 }
 
-function inserirObra(req, res) {
+async function inserirObra(req, res) {
     
 }
 
-function listarObra(req, res) {
+async function listarObra(req, res) {
     
 }
 
-
-function filtrarObra(req, res) {
+async function filtrarObra(req, res) {
     
 }
 
-function deletarObra(req, res) {
+async function deletarObra(req, res) {
     
 }
 
-function deletaObraObjId(req, res) {
-    
-}
-
-function atualizarObra(req, res) {
-    
-}
-
-function atualizarObraObjId(req, res) {
+async function atualizarObra(req, res) {
     
 }

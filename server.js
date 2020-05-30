@@ -11,9 +11,9 @@ var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(3017, () => {
-	console.log("Backend tecnova iniciado em: http://localhost:3017")
+	console.log("Backend obras irregulares Conde/PB iniciado em: http://localhost:3017")
 });
 httpsServer.listen(3018, () => {
-	console.log("Backend tecnova iniciado em: https://localhost:3018")
+	console.log("Backend obras irregulares Conde/PB iniciado em: https://localhost:3018")
 });
 
