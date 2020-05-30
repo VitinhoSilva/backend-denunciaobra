@@ -13,7 +13,7 @@ module.exports = obraUtil;
 
 async function criarDatabaseObra(req, res) {
     try {
-         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia DATE NOT NULL, autor_denuncia constCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, observacao TEXT NOT NULL);';
+         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia DATE NOT NULL, autor_denuncia VARCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, observacao TEXT NOT NULL);';
          const pg = await cliente.connection();
          await pg.query(tabela).then((response) => {
             console.log('Tabela criada com sucesso, ou já existia!');
