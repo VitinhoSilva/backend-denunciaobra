@@ -1,4 +1,5 @@
 const cliente = require('../../database.js');
+const moment = require('moment');
 
 const obraUtil = {
     criarDatabaseObra: criarDatabaseObra,
@@ -13,7 +14,7 @@ module.exports = obraUtil;
 
 async function criarDatabaseObra(req, res) {
     try {
-         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia DATE NOT NULL, autor_denuncia VARCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, observacao TEXT NOT NULL);';
+         const tabela = 'CREATE TABLE IF NOT EXISTS denuncia (id SERIAL NOT NULL PRIMARY KEY, data_denuncia VARCHAR(10) NOT NULL, autor_denuncia VARCHAR(255) NOT NULL, x NUMERIC NOT NULL, y NUMERIC NOT NULL, observacao TEXT NOT NULL);';
          const pg = await cliente.connection();
          await pg.query(tabela).then((response) => {
             console.log('Tabela criada com sucesso, ou já existia!');
@@ -27,9 +28,9 @@ async function criarDatabaseObra(req, res) {
 
 async function inserirObra(req, res) {
     try {
-        const {data, autor, x, y, observacao} = req.body;
-        if (data && autor && x && y && observacao) {
-            const inserting = `INSERT INTO denuncia (data_denuncia, autor_denuncia, x, y, observacao) VALUES ('${data}', '${autor}' , ${x}, ${y}, '${observacao}');`;
+        const {autor, x, y, observacao} = req.body;
+        if (autor && x && y && observacao) {
+            const inserting = `INSERT INTO denuncia (data_denuncia, autor_denuncia, x, y, observacao) VALUES ('${moment().format('DD/MM/YYYY')}', '${autor}' , ${x}, ${y}, '${observacao}');`;
             const pg = await cliente.connection();
             await pg.query(inserting).then((response) => {
                 const result = {result: 'Campo inserido com sucesso!'};
@@ -151,9 +152,9 @@ async function deletarObra(req, res) {
 async function atualizarObra(req, res) {
     try {
         const id = req.params.id;
-        const {data, autor, x, y, observacao} = req.body;
+        const {autor, x, y, observacao} = req.body;
         if (data && autor && x && y && observacao) {
-            const updating = `UPDATE denuncia SET data_denuncia = '${data}', autor_denuncia = '${autor}', x = ${x}, y = ${y}, observacao = '${observacao}' WHERE id = ${id}`
+            const updating = `UPDATE denuncia SET data_denuncia = '${moment().format('DD/MM/YYYY')}', autor_denuncia = '${autor}', x = ${x}, y = ${y}, observacao = '${observacao}' WHERE id = ${id}`
             const pg = await cliente.connection();
             await pg.query(updating).then((response) => {
                 if (response.rowCount) {
