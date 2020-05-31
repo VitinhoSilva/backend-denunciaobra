@@ -154,7 +154,7 @@ async function atualizarObra(req, res) {
         const id = req.params.id;
         const {autor, x, y, observacao} = req.body;
         if (data && autor && x && y && observacao) {
-            const updating = `UPDATE denuncia SET data_denuncia = '${moment().format('DD/MM/YYYY')}', autor_denuncia = '${autor}', x = ${x}, y = ${y}, observacao = '${observacao}' WHERE id = ${id}`
+            const updating = `UPDATE denuncia SET observacao = '${observacao}' WHERE id = ${id}`
             const pg = await cliente.connection();
             await pg.query(updating).then((response) => {
                 if (response.rowCount) {
