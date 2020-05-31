@@ -152,8 +152,8 @@ async function deletarObra(req, res) {
 async function atualizarObra(req, res) {
     try {
         const id = req.params.id;
-        const {autor, x, y, observacao} = req.body;
-        if (data && autor && x && y && observacao) {
+        const {observacao} = req.body;
+        if (observacao) {
             const updating = `UPDATE denuncia SET observacao = '${observacao}' WHERE id = ${id}`
             const pg = await cliente.connection();
             await pg.query(updating).then((response) => {
