@@ -123,29 +123,17 @@ async function deletarObra(req, res) {
         const pg = await cliente.connection();
         await pg.query(deleting).then((response) => {
             if (response.rowCount) {
-                const result = {result: 'Campo deletado com sucesso!'};
-                res.json(result);
+                res.send('Campo deletado com sucesso!');
             } else {
-                const result = {
-                    msg: 'Id não cadastrado!',
-                };
-                res.json(result);
+                res.send('Id não cadastrado!');
             }
         }).catch((err) => {
             console.log('erro: ', err);
-            const result = {
-                msg: 'Contate o administrador do sistema!',
-                erro: err
-            };
-            res.json(result);
+            res.send('Contate o administrador do sistema!');
         });
     } catch (err) {
         console.log('erro: ', err);
-        const result = {
-            msg: 'Contate o administrador do sistema!',
-            erro: err
-        };
-        res.json(result);
+        res.send('Contate o administrador do sistema!');
     }
 }
 
